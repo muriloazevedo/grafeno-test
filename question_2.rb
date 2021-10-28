@@ -13,11 +13,22 @@ input = [
 
 $validations = YAML.load(File.read('format-1.yml'))
 
+
+def rule_length(str, length)
+  return str if str.length == length
+
+  str.slice(0..length - 1)
+end
+
 def validates(item)
   concat_str = ''
   item.each do |k, v|
     key_validations = $validations[k.to_s]
-    puts key_validations
+    next if key_validations.nil?
+
+    length = key_validations['length']
+    result = rule_length(v, length)
+    puts result
   end
 end
 
